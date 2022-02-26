@@ -1,2 +1,1 @@
-# blockchain
-A simplified Bitcoin client that simulated mining blocks and making transactions
+A simplified Bitcoin client that simulated mining blocks and making transactions.
