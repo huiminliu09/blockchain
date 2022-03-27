@@ -9,6 +9,10 @@ pub mod crypto;
 pub mod miner;
 pub mod network;
 pub mod transaction;
+mod signedtrans;
+mod mempool;
+mod state;
+mod generator;
 
 use clap::clap_app;
 use crossbeam::channel;
@@ -19,6 +23,9 @@ use std::net;
 use std::process;
 use std::thread;
 use std::time;
+use std::sync::{Arc, Mutex};
+use crate::blockchain::Blockchain;
+use crate::mempool::Mempool;
 
 fn main() {
     // parse command line arguments
@@ -73,18 +80,33 @@ fn main() {
             error!("Error parsing P2P workers: {}", e);
             process::exit(1);
         });
+
+    let bc = Arc::new(Mutex::new(Blockchain::new()));
+    let mem_pool = Arc::new(Mutex::new(Mempool::new()));
     let worker_ctx = worker::new(
         p2p_workers,
         msg_rx,
         &server,
+        &bc,
+        &mem_pool
     );
     worker_ctx.start();
 
     // start the miner
     let (miner_ctx, miner) = miner::new(
         &server,
+        &bc,
+        &mem_pool
     );
     miner_ctx.start();
+
+    // start the generator
+    let (generator_ctx, generator) = generator::new(
+        &server,
+        &bc,
+        &mem_pool
+    );
+    generator_ctx.start();
 
     // connect to known peers
     if let Some(known_peers) = matches.values_of("known_peer") {
@@ -124,6 +146,7 @@ fn main() {
     ApiServer::start(
         api_addr,
         &miner,
+        &generator,
         &server,
     );
 

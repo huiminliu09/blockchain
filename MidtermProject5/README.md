@@ -6,7 +6,7 @@ This part of the Midterm project will deal with including transactions in the co
 
 ## Repository management and submission
 
-1. We suggest you to continue to work on your repo of midterm project. 
+1. We suggest you to continue to work on your repo of midterm project.
 2. No submission required.
 
 ## Code provided
@@ -23,7 +23,7 @@ Add the following new messages:
 
 ### Transaction format
 
-You are free to choose any format for transaction structure. We recommend using a transaction structure that is either compatable with the UTXO model in Bitcoin or the account based model in Ethereum. 
+You are free to choose any format for transaction structure. We recommend using a transaction structure that is either compatable with the UTXO model in Bitcoin or the account based model in Ethereum.
 
 - UTXO model transaction: input contains the hash of previous transaction and the index; output contains a recipient address and a value. It can support multiple inputs/outputs in a transaction. You can refer to [Bitcoin](https://en.bitcoin.it/wiki/Transaction) transaction but don't need to adopt its complex scripting language.
 - Account based model transaction: it should contain a recipient address, a value, and a account-nonce. It only supports single sender and single receiver. This should be simpler to implement than UTXO model.
@@ -41,7 +41,7 @@ When receiving and processing a new transaction in *src/network/worker.rs*, plea
 
 #### Transaction signature check
 
-Check if the transaction is signed correctly by the public key(s). 
+Check if the transaction is signed correctly by the public key(s).
 
 (Not necessary at this stage.) In UTXO model, also check the public key(s) matches the owner(s)'s address of these inputs. In account based model, check if the public key matches the owner's address of the withdrawing account.
 

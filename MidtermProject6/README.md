@@ -1,6 +1,6 @@
 # Midterm Project, Part 6
 
-This is the last part of midterm project, and you are going to finish the Bitcoin client. You need to maintain a state for the ledger that the blockchain creates and add all the necessary checks related to it. 
+This is the last part of midterm project, and you are going to finish the Bitcoin client. You need to maintain a state for the ledger that the blockchain creates and add all the necessary checks related to it.
 
 ** Due 11 PM, December 2, 2021.  Submit a report on Canvas. One submission for one team is enough. Remember to include both author names if you are a team of two. **
 
@@ -20,7 +20,7 @@ In last part, you include transactions into blocks. However, in order to prevent
 
 ### State
 
-Ledger state, or **State**, is a collection of all the required information to check transactions.  
+Ledger state, or **State**, is a collection of all the required information to check transactions.
 
 - In UTXO model, **State** should contain all the unspent transaction outputs. The format of an unspent transaction output may contain *(transaction hash, output index, value, recipient)*. Output index refers to the index in transactions (remember transactions are multi-output.) Recipient refers to the recipient address of that output, and is used as the owner of that unspent transaction output.
 - In account based model, **State** should contain all the accounts' information. It may contain *(account address, account nonce, balance)*.
@@ -84,11 +84,11 @@ For each of the following bullet your video convincingly demonstrates, you recei
 3. the growth of the blockchain on each node, and that all nodes agree to each other (e.g., showing the hash and height of the tip, and the total count of the blocks);
 4. the evolution of the ledger state on each node, and that all nodes agree to each other (e.g., showing the balances of certain accounts if your implementation is account based);
 5. occasional invalid transactions are properly rejected and do not crash the program (i.e. the generators should take a small chance to generate invalid transactions).
- 
+
 If your bitcoin client is not fully completed, you can still get partial credits by showing how the individual parts work, for example:
 
 6. traces of the generator generating random UTXO or account-based transactions, signing them, adding them to the mempool, and broadcasting their hashes;
 7. traces of the network exchanging messages;
 8. traces of all sorts of validations when receiving a new block/transaction;
 9. traces of one process working alone (instead of three processes working in harmony);
-and so on.
+   and so on.

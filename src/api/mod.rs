@@ -2,6 +2,7 @@ use serde::Serialize;
 use crate::miner::Handle as MinerHandle;
 use crate::network::server::Handle as NetworkServerHandle;
 use crate::network::message::Message;
+use crate::generator::Generator;
 
 use log::info;
 use std::collections::HashMap;
@@ -14,6 +15,7 @@ use url::Url;
 pub struct Server {
     handle: HTTPServer,
     miner: MinerHandle,
+    generator: Generator,
     network: NetworkServerHandle,
 }
 
@@ -40,18 +42,21 @@ impl Server {
     pub fn start(
         addr: std::net::SocketAddr,
         miner: &MinerHandle,
+        generator: &Generator,
         network: &NetworkServerHandle,
     ) {
         let handle = HTTPServer::http(&addr).unwrap();
         let server = Self {
             handle,
             miner: miner.clone(),
+            generator: generator.clone(),
             network: network.clone(),
         };
         thread::spawn(move || {
             for req in server.handle.incoming_requests() {
                 let miner = server.miner.clone();
                 let network = server.network.clone();
+                let generator = server.generator.clone();
                 thread::spawn(move || {
                     // a valid url requires a base
                     let base_url = Url::parse(&format!("http://{}/", &addr)).unwrap();
@@ -87,8 +92,40 @@ impl Server {
                             miner.start(lambda);
                             respond_result!(req, true, "ok");
                         }
+                        "/miner/end" => {
+                            miner.exit();
+                            respond_result!(req, true, "ok");
+                        }
                         "/network/ping" => {
                             network.broadcast(Message::Ping(String::from("Test ping")));
+                            respond_result!(req, true, "ok");
+                        }
+                        "/trans/start" => {
+                            let params = url.query_pairs();
+                            let params: HashMap<_, _> = params.into_owned().collect();
+                            let lambda = match params.get("lambda") {
+                                Some(v) => v,
+                                None => {
+                                    respond_result!(req, false, "missing lambda");
+                                    return;
+                                }
+                            };
+                            let lambda = match lambda.parse::<u64>() {
+                                Ok(v) => v,
+                                Err(e) => {
+                                    respond_result!(
+                                        req,
+                                        false,
+                                        format!("error parsing lambda: {}", e)
+                                    );
+                                    return;
+                                }
+                            };
+                            generator.start(lambda);
+                            respond_result!(req, true, "ok");
+                        }
+                        "/trans/end" => {
+                            generator.exit();
                             respond_result!(req, true, "ok");
                         }
                         _ => {

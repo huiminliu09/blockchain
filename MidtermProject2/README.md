@@ -6,7 +6,7 @@ In this part of midterm project, you are going to implement the **mining** modul
 
 ## Repository management and submission
 
-1. We suggest you to continue to work on your repo of midterm project. 
+1. We suggest you to continue to work on your repo of midterm project.
 2. Submit a report in pdf on Canvas. Please don't submit code. One submission for one team is enough.
 
 ## Code provided
@@ -17,7 +17,7 @@ The following files are related to this assignment.
 
 To see how the code in these files works, you can run `cargo run -- -vv` and you will see these logs in the terminal
 > Miner initialized into paused mode
-> 
+>
 > API server listening at 127.0.0.1:7000
 
 This means the miner is not started yet, however, you can use API to start it. In a browser (or *curl* command), go to
@@ -76,20 +76,20 @@ If it is satisfied, the block is successfully generated. Congratulations! Just i
 
 After you finish the programming, you will have a program that can mine blocks. The experiment section requires you to run the program with different threshold/difficulty and measure the mining rate.
 
-First, you need to set a difficulty. Since we use static difficulty, it's sufficient to set that of the genesis block. (Recall that the genesis block is created when calling *Blockchain::new()*.) Please run experiments with **at least 3 different difficulty values**. 
+First, you need to set a difficulty. Since we use static difficulty, it's sufficient to set that of the genesis block. (Recall that the genesis block is created when calling *Blockchain::new()*.) Please run experiments with **at least 3 different difficulty values**.
 
 Then, start the program **in release version** by running
 ```
 cargo run --release -- -vv
 ``` 
-and call API via browser or curl command: 
+and call API via browser or curl command:
 ```
 http://127.0.0.1:7000/miner/start?lambda=0
 ```
 
 After some time, stop miner (or the program), count the number of blocks and calculate the mining rate (block per second). Please run experiments such that the mining rate is not too large or too low. 0.01 to 1000 blocks per second is a reasonable range. (If too low, you have to wait for too long. If too high, you may run out of memory.)
 
-You also need to write the function to get the number of blocks if you don't have one. You can do it in your way. It can be in *src/blockchain.rs*, *src/miner.rs*, and/or *src/api/mod.rs*, etc. 
+You also need to write the function to get the number of blocks if you don't have one. You can do it in your way. It can be in *src/blockchain.rs*, *src/miner.rs*, and/or *src/api/mod.rs*, etc.
 
 ## Report
 
